@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="grid">
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
+      <div>
+        <div style="font-weight:800">Rooms</div>
+        <div class="muted">Aap multiple debates save kar sakte hain</div>
+      </div>
+    </div>
+
+    <div style="height:12px"></div>
+
+    {% for r in rooms %}
+      <a class="roomlink" href="{% url 'room' r.id %}">
+        <div style="font-weight:700">{{ r.title }}</div>
+        <div class="muted">ID: {{ r.id }} · {{ r.created_at|date:"Y-m-d H:i" }}</div>
+      </a>
+    {% empty %}
+      <div class="muted">No rooms yet.</div>
+    {% endfor %}
+
+    <div style="height:10px"></div>
+
+    <form method="post">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="new_room">
+      <input class="inp" name="title" placeholder="New room title">
+      <div style="height:10px"></div>
+      <button class="btn primary" type="submit">Create Room</button>
+    </form>
+  </div>
+
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
+      <div>
+        <div style="font-weight:800">{{ room.title }}</div>
+        <div class="muted">Debate history database mein save hoti hai</div>
+      </div>
+      <form method="post" action="{% url 'clear_room' room.id %}" style="margin:0">{% csrf_token %}<button class="btn danger" type="submit">Clear</button></form>
+    </div>
+
+    <div style="height:14px"></div>
+
+    <form method="post">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="send">
+      <div style="display:grid;grid-template-columns:1fr 220px 180px;gap:10px">
+        <input class="inp" name="topic" placeholder="Topic, e.g. 'AI should be taught in schools'" required>
+        <select class="sel" name="mode">
+          <option value="student_vs_ai">Student vs AI</option>
+          <option value="ai_vs_ai">AI vs AI + Judge</option>
+        </select>
+        <select class="sel" name="student_side">
+          <option value="pro">Student: Pro</option>
+          <option value="con">Student: Con</option>
+        </select>
+      </div>
+      <div style="height:10px"></div>
+      <textarea class="ta" name="text" placeholder="Aap apni argument yahan likhein..." required></textarea>
+      <div style="height:10px"></div>
+      <button class="btn primary" type="submit">Send</button>
+      <span class="muted" style="margin-left:10px">Provider: {{ ai_provider }}</span>
+    </form>
+
+    <div style="height:18px"></div>
+
+    {% for m in room.messages.all %}
+      <div class="msg">
+        <div class="role">{{ m.get_role_display }}</div>
+        <div class="content">{{ m.content }}</div>
+        <div class="muted" style="margin-top:6px">{{ m.created_at|date:"Y-m-d H:i" }}</div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

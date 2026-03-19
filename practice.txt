@@ -1,0 +1,7 @@
+1. pip install django requests
+2. django-admin startproject ai_debate_arena
+3. python manage.py startapp debate
+4. python manage.py runserver 4978
+5. python manage.py makemigrations
+6. python manage.py migrate
+7. python manage.py createsuperuser

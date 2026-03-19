@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="card" style="max-width:520px;margin:0 auto">
+    <h2 style="margin:0 0 8px 0">Login</h2>
+    <div class="muted" style="margin-bottom:14px">Demo project: aap apna user bana kar login karein.</div>
+    <form method="post">
+      {% csrf_token %}
+      <div style="display:grid;gap:10px">
+        <input class="inp" type="text" name="username" placeholder="Username" required>
+        <input class="inp" type="password" name="password" placeholder="Password" required>
+        <button class="btn primary" type="submit">Sign in</button>
+      </div>
+      {% if form.errors %}
+        <div class="muted" style="margin-top:10px;color:var(--danger)">Username ya password ghalat ho sakta hai.</div>
+      {% endif %}
+    </form>
+    <div class="muted" style="margin-top:14px">
+      Pehli dafa ke liye superuser banayein: <span style="opacity:.9">python manage.py createsuperuser</span>
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>AI Debate Arena</title>
+  <style>
+    :root{--bg:#0b1220;--card:#121a2b;--muted:#91a4c7;--text:#e7eeff;--line:#24314f;--accent:#7aa2ff;--danger:#ff7a7a}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial;background:linear-gradient(180deg,#050914,#0b1220);color:var(--text)}
+    a{color:inherit;text-decoration:none}
+    .top{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(5,9,20,.85);backdrop-filter:blur(10px)}
+    .brand{display:flex;gap:10px;align-items:center}
+    .dot{width:10px;height:10px;border-radius:999px;background:var(--accent);box-shadow:0 0 18px rgba(122,162,255,.6)}
+    .wrap{max-width:1100px;margin:0 auto;padding:20px}
+    .grid{display:grid;grid-template-columns:280px 1fr;gap:16px}
+    .card{background:rgba(18,26,43,.92);border:1px solid var(--line);border-radius:16px;padding:14px;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+    .muted{color:var(--muted);font-size:13px}
+    .btn{border:1px solid var(--line);background:transparent;color:var(--text);padding:10px 12px;border-radius:12px;cursor:pointer}
+    .btn:hover{border-color:#3a4a76}
+    .btn.primary{background:rgba(122,162,255,.18);border-color:rgba(122,162,255,.35)}
+    .btn.danger{background:rgba(255,122,122,.16);border-color:rgba(255,122,122,.35)}
+    .inp, .sel, .ta{width:100%;background:#0a1020;color:var(--text);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+    .ta{min-height:100px;resize:vertical}
+    .msg{padding:10px 12px;border:1px solid var(--line);border-radius:14px;background:#0a1020;margin:10px 0}
+    .msg .role{font-weight:700;font-size:12px;letter-spacing:.4px;text-transform:uppercase;color:var(--muted)}
+    .msg .content{white-space:pre-wrap;margin-top:6px;line-height:1.35}
+    .roomlink{display:block;padding:10px 12px;border-radius:12px;border:1px solid var(--line);margin-bottom:10px}
+    .roomlink:hover{border-color:#3a4a76}
+    .flash{margin:12px 0}
+    .flash .item{padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:#0a1020}
+    .flash .error{border-color:rgba(255,122,122,.45)}
+    .flash .success{border-color:rgba(122,255,190,.45)}
+    .inline-form{display:inline}
+    .link-btn{background:none;border:0;padding:0;color:inherit;cursor:pointer;font:inherit;text-decoration:underline}
+    @media (max-width: 900px){.grid{grid-template-columns:1fr}.top{position:static}}
+  </style>
+</head>
+<body>
+  <div class="top">
+    <div class="brand">
+      <div class="dot"></div>
+      <div>
+        <div style="font-weight:800">AI Debate Arena</div>
+        <div class="muted">Students vs AI, AI vs AI</div>
+      </div>
+    </div>
+    <div class="muted">
+      {% if user.is_authenticated %}
+        {{ user.username }} ·
+        <form class="inline-form" method="post" action="{% url 'logout' %}">
+          {% csrf_token %}
+          <button class="link-btn" type="submit">Logout</button>
+        </form>
+      {% endif %}
+    </div>
+  </div>
+  <div class="wrap">
+    {% if messages %}
+      <div class="flash">
+        {% for m in messages %}
+          <div class="item {% if m.tags %}{{ m.tags }}{% endif %}">{{ m }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+    {% block content %}{% endblock %}
+  </div>
+</body>
+</html>
