@@ -12,10 +12,12 @@ load_dotenv(env_file)
 
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "unsafe-dev-secret-key")
 
+CSRF_TRUSTED_ORIGINS = ['https://aidebatearena-production.up.railway.app']
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['https://aidebatearena-production.up.railway.app']
 
 
 # Application definition
